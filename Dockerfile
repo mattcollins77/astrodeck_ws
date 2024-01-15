@@ -15,6 +15,6 @@ RUN colcon build --symlink-install
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 RUN echo "source /home/astrodeck_ws/install/setup.bash" >> ~/.bashrc
 
-COPY entrypoint.sh /entry.sh
+COPY entry.sh /entry.sh
 RUN chmod +x /entry.sh
 ENTRYPOINT ["/entry.sh"]
