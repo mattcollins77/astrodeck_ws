@@ -1,4 +1,4 @@
-FROM osrf/ros2:iron-desktop
+FROM osrf/ros:iron-desktop-full-jammy
 
 RUN  apt-get update &&  apt-get upgrade -y &&  apt-get install -y \
 ros-${ROS_DISTRO}-demo-nodes-cpp \
