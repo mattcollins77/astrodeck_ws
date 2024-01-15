@@ -10,4 +10,4 @@ colcon build --symlink-install
 source /home/astrodeck_ws/install/setup.bash
 source install/setup.bash
 # Execute the ROS launch file
-ros2 launch my_package talker.launch.py
+/bin/bash
