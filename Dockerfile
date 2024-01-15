@@ -7,5 +7,11 @@ ros-${ROS_DISTRO}-demo-nodes-py
 RUN mkdir -p /home/astrodeck_ws/src
 WORKDIR /home/astrodeck_ws
 
+# Build your ROS workspace using colcon
+RUN colcon build
+
+# Source the setup script to set up the ROS environment
+RUN source install/setup.bash
+
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 
