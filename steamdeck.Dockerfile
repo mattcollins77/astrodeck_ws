@@ -1,4 +1,4 @@
-FROM osrf/ros:iron
+FROM ros:iron
 
 RUN  apt-get update &&  apt-get upgrade -y &&  apt-get install -y \
 ros-${ROS_DISTRO}-demo-nodes-cpp \
