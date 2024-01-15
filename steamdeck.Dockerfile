@@ -15,6 +15,9 @@ RUN colcon build --symlink-install
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 RUN echo "source /home/astrodeck_ws/install/setup.bash" >> ~/.bashrc
 
+ENV DISPLAY=:0
+ENV QT_X11_NO_MITSHM=1
+
 COPY entry.sh /entry.sh
 RUN chmod +x /entry.sh
 ENTRYPOINT ["/entry.sh"]
