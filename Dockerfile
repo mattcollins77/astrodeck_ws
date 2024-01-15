@@ -1,6 +1,6 @@
 FROM arm64v8/ros:iron
 
-RUN sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install -y \
+RUN  apt-get update &&  apt-get upgrade -y &&  apt-get install -y \
 ros-${ROS_DISTRO}-demo-nodes-cpp \
 ros-${ROS_DISTRO}-demo-nodes-py
 
@@ -9,3 +9,4 @@ WORKDIR /home/astrodeck_ws
 
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 
+CMD source /opt/ros/${ROS_DISTRO}/setup.bash
