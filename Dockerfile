@@ -4,7 +4,7 @@ RUN  apt-get update &&  apt-get upgrade -y &&  apt-get install -y \
 ros-${ROS_DISTRO}-demo-nodes-cpp \
 ros-${ROS_DISTRO}-demo-nodes-py
 
-RUN mkdir -p csrc
+RUN mkdir -p /home/astrodeck_ws
 WORKDIR /home/astrodeck_ws
 
 # Build your ROS workspace using colcon
