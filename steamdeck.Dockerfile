@@ -1,8 +1,9 @@
-FROM ros:iron
+FROM osrf/ros2:iron-desktop
 
 RUN  apt-get update &&  apt-get upgrade -y &&  apt-get install -y \
 ros-${ROS_DISTRO}-demo-nodes-cpp \
-ros-${ROS_DISTRO}-demo-nodes-py
+ros-${ROS_DISTRO}-demo-nodes-py \
+ros-iron-rviz2
 
 RUN mkdir -p /home/astrodeck_ws
 WORKDIR /home/astrodeck_ws
