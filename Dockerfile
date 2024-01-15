@@ -15,4 +15,3 @@ RUN colcon build --symlink-install
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 COPY entry.sh /entry.sh
 RUN chmod +x /entry.sh
-ENTRYPOINT ["/entry.sh"]
