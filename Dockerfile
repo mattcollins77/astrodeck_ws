@@ -11,7 +11,7 @@ WORKDIR /home/astrodeck_ws
 RUN colcon build
 
 # Source the setup script to set up the ROS environment
-RUN /bin/bash -c "source /home/astrodeck_wsinstall/setup.bash && echo 'source /home/astrodeck_wsinstall/setup.bash' >> ~/.bashrc"
+RUN /bin/bash -c "source /home/astrodeck_ws/install/setup.bash && echo 'source /home/astrodeck_ws/install/setup.bash' >> ~/.bashrc"
 
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 
