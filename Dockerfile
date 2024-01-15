@@ -9,5 +9,4 @@ WORKDIR /home/astrodeck_ws
 
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 
-CMD source /opt/ros/${ROS_DISTRO}/setup.bash && \
-    ros2 run demo_nodes_cpp talker
+CMD ros2 run demo_nodes_cpp talker
