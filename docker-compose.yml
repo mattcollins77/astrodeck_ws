@@ -7,4 +7,3 @@ services:
       - "80:80"
     volumes:
       - ./src:/home/astrodeck_ws/src
-    command: /bin/bash
