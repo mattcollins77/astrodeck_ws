@@ -11,7 +11,7 @@ servo = maestro.Controller(serial_port)
 
 
 # Run the script subroutine on the Maestro (substitute 0 with the desired subroutine number)
-subroutine_number = 0
+subroutine_number = 1
 servo.runScriptSub(subroutine_number)
 
 # Close the serial connection when done
