@@ -162,6 +162,7 @@ XONE_VALUE_MAP = {
 JOYSTICK_CODE_VALUE_MAP = {
     'Microsoft X-Box 360 pad': (XINPUT_CODE_MAP, XINPUT_VALUE_MAP),
     'Sony Computer Entertainment Wireless Controller': (PS4_CODE_MAP, PS4_VALUE_MAP),
+    'Sony Interactive Entertainment Wireless Controller': (PS4_CODE_MAP, PS4_VALUE_MAP),
     'Logitech Gamepad F710': (F710_CODE_MAP, F710_VALUE_MAP),
     'Microsoft X-Box One pad': (XONE_CODE_MAP, XONE_VALUE_MAP)
 }
@@ -221,7 +222,8 @@ class JoystickRos2(Node):
 
             # detected joystick is not keymapped yet
             if (gamepad.name not in JOYSTICK_CODE_VALUE_MAP):
-                print('Sorry, joystick type not supported yet! Please plug in supported joystick')
+                print(gamepad.name)
+                print('Sorry, joystick type not supported yet! Please plug in supported joystick {gamepad.name}')
                 time.sleep(1)
                 device_manager.find_devices()
                 continue
@@ -240,7 +242,7 @@ class JoystickRos2(Node):
                     events = gamepad._do_iter()
                 # check unplugged joystick
                 except OSError:
-                    print('Joystick not found. Will retry every second.')
+                    print('Joystick not found. Will retry every second.aaa')
                     time.sleep(1)
                     device_manager.find_devices()
                     break
