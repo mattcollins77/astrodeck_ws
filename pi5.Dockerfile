@@ -3,6 +3,8 @@ FROM arm64v8/ros:iron
 RUN  apt-get update &&  apt-get upgrade -y &&  apt-get install -y \
 ros-${ROS_DISTRO}-demo-nodes-cpp \
 ros-${ROS_DISTRO}-demo-nodes-py \
+ros-${ROS_DISTRO}-joy \
+joystick \
 python3-serial
 
 RUN mkdir -p /home/astrodeck_ws

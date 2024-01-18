@@ -214,7 +214,7 @@ class JoystickRos2(Node):
             try:
                 gamepad = device_manager.gamepads[0]
             except IndexError:
-                print('Joystick not found. Will retry every second.')
+                print('Joystick not found. Will retry every second.sssss')
                 time.sleep(1)
                 device_manager.find_devices()
                 continue
