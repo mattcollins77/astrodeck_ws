@@ -1,3 +1,4 @@
+//https://github.com/Ar-Ray-code/ps_ros2_common
 #include "joy/ps_base.hpp"
 #define JOY_VERSION PS4
 
@@ -6,9 +7,7 @@
 #if JOY_VERSION == PS4
 #include "joy/ps4.hpp"
 using namespace ps4;
-#elif JOY_VERSION == PS3
-#include "joy/ps3.hpp"
-using namespace ps3;
+
 #endif
 
 namespace ps_ros2_common {

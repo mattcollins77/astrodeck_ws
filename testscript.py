@@ -2,7 +2,7 @@ import maestro
 import time
 
 # Define the serial port (update with your correct port)
-serial_port = '/dev/ttyACM0'  # Use 'ls /dev/tty*' to find the correct port
+serial_port = '/dev/ttyACM1'  # Use 'ls /dev/tty*' to find the correct port
 
 # Open a connection to the Maestro controller
 servo = maestro.Controller(serial_port)
