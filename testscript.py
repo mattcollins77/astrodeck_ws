@@ -2,28 +2,45 @@ import maestro
 import time
 import serial
 
-# Define the serial port (update with your correct port)
-serial_port = '/dev/ttyACM1'  # Use 'ls /dev/tty*' to find the correct port
-teensy_port = '/dev/ttyACM0'
+# Define the serial ports and baud rate
+serial_port_maestro = '/dev/ttyACM1'
+serial_port_teensy = '/dev/ttyACM0'
 baudrate = 9600
 
-# Open a connection to the Maestro controller
-servo = maestro.Controller(serial_port)
+# Function to communicate with Maestro
+def communicate_with_maestro():
+    try:
+        # Open a connection to the Maestro controller
+        servo = maestro.Controller(serial_port_maestro)
 
-# Set the acceleration and target positions for servo 0 and servo 1
+        # Run the script subroutine on the Maestro
+        subroutine_number = 1
+        servo.runScriptSub(subroutine_number)
 
+        # Close the serial connection
+        servo.close()
+    except Exception as e:
+        print(f"Error with Maestro communication: {e}")
 
-# Run the script subroutine on the Maestro (substitute 0 with the desired subroutine number)
-subroutine_number = 1
-servo.runScriptSub(subroutine_number)
+# Function to continuously communicate with Teensy
+def continuously_communicate_with_teensy():
+    try:
+        # Open a connection to Teensy
+        with serial.Serial(serial_port_teensy, baudrate, timeout=1) as ser:
+            while True:
+                ser.write(b'<SH1>')  # Send the command
+                print("Command sent to Teensy: <SH1>")
+                
+                # Wait for 10 seconds before sending the next command
+                time.sleep(10)
+    except Exception as e:
+        print(f"Error with Teensy communication: {e}")
 
-# Close the serial connection when done
-servo.close()
-# Create a serial connection
-with serial.Serial(teensy_port, baudrate, timeout=1) as ser:
-    while True:
-        ser.write(b'<SH1>')  # Send the command
-        print("Command sent: <SH1>")
-        
-        # Wait for 10 seconds
-        time.sleep(10)
+# Communicate with Maestro
+communicate_with_maestro()
+
+# Delay to ensure the Maestro connection is closed before starting Teensy communication
+time.sleep(1)
+
+# Start continuous communication with Teensy
+continuously_communicate_with_teensy()
