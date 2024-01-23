@@ -19,7 +19,7 @@ class SoundControl(Node):
             'mood_topic',
             self.listener_callback,
             10)
-        self.serial_port_teensy = '/dev/ttyACM1'
+        self.serial_port_teensy = '/dev/ttyACM0'
         self.baudrate = 9600
         try:
             self.teensy_serial = serial.Serial(self.serial_port_teensy, self.baudrate, timeout=1)
