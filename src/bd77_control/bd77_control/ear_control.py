@@ -54,14 +54,14 @@ class EarControl(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    minimal_subscriber = EarControl()
+    ear_control_node = EarControl()
 
-    rclpy.spin(minimal_subscriber)
+    rclpy.spin(ear_control_node)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    minimal_subscriber.destroy_node()
+    ear_control_node.destroy_node()
     rclpy.shutdown()
 
 
