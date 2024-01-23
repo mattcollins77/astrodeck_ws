@@ -30,7 +30,7 @@ class EarControl(Node):
 
         # Check if the tuple is in the mapping
         if mood_key in self.mood_command_map:
-            command = self.mood_command_map[mood_key].encode()  # Encode the command
+            command = self.mood_command_map[mood_key]  # Encode the command
             self.communicate_with_maestro(command)
         else:
             self.get_logger().info('No command mapped for this mood combination')
