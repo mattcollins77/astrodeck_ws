@@ -38,7 +38,7 @@ class EarControl(Node):
     def communicate_with_maestro(self, command):
         try:
             # Open a connection to the Maestro controller
-            servo = maestro.Controller('/dev/ttyACM2')
+            servo = maestro.Controller('/dev/ttyACM1')
 
             # Run the script subroutine on the Maestro
           
@@ -47,7 +47,7 @@ class EarControl(Node):
             # Close the serial connection
             servo.close()
         except Exception as e:
-            print(f"Error with Maestro communication: {e}")
+            self.get_logger().info('Error with Maestro')
             
     
 
