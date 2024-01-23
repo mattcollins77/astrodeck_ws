@@ -6,9 +6,11 @@ ros-${ROS_DISTRO}-demo-nodes-py \
 ros-${ROS_DISTRO}-joy \
 joystick \
 python3-serial
+python3-pip
 
 RUN mkdir -p /home/astrodeck_ws
 WORKDIR /home/astrodeck_ws
+RUN python3 -m pip install pyserial
 
 # Build your ROS workspace using colcon
 RUN colcon build --symlink-install
