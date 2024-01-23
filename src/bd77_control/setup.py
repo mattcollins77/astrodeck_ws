@@ -1,9 +1,9 @@
 from setuptools import find_packages, setup
 
-package_name = 'dd7_control'
+package_name = 'bd77_control'
 
 setup(
-    name=package_name,
+       name=package_name,
     version='0.0.0',
     packages=find_packages(exclude=['test']),
     data_files=[
@@ -20,9 +20,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'my_node = dd7_control.my_node:main',
-            'talker = dd7_control.publisher_member_function:main',
-            'listener = dd7_control.subscriber_member_function:main',
+            'keyboard_input = bd77_control.publisher_keyboard_input:main',
+            'sound_control = bd77_control.sound_control:main',
+            'eye_control = bd77_control.eye_control:main'
         ],
     },
 )

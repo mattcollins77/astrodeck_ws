@@ -1,5 +1,5 @@
 def main():
-    print('Hi from dd7_control.')
+    print('Hi from my_package2.')
 
 
 if __name__ == '__main__':

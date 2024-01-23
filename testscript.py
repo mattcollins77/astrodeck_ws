@@ -5,6 +5,7 @@ import serial
 # Define the serial ports and baud rate
 serial_port_maestro = '/dev/ttyACM1'
 serial_port_teensy = '/dev/ttyACM0'
+
 baudrate = 9600
 
 # Function to communicate with Maestro
