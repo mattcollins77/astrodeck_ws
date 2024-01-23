@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-import maestro
+from . import maestro
 
 from bd77_common.msg import MoodMsg  # Replace with your actual package name
 import serial
