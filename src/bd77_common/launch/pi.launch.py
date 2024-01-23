@@ -20,5 +20,11 @@ def generate_launch_description():
             name='eye_control_node',
             output='screen'
         ),
+        Node(
+            package='bd77_control',
+            executable='ear_control',
+            name='ear_control_node',
+            output='screen'
+        ),
         # Add more nodes as needed
     ])
