@@ -12,7 +12,7 @@ class EarControl(Node):
         super().__init__('ear_control')
         self.mood_command_map = {
             ('Happy', 1, 1): 1,
-            ('Sad', 2, 1): 2,
+            ('Sad', 2, 1): 0,
             # Add more mappings as needed
         }
         self.subscription = self.create_subscription(
