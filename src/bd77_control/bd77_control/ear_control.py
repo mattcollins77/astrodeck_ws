@@ -31,7 +31,7 @@ class EarControl(Node):
         # Check if the tuple is in the mapping
         if mood_key in self.mood_command_map:
             command = self.mood_command_map[mood_key].encode()  # Encode the command
-            self.communicate_with_teensy(command)
+            self.communicate_with_maestro(command)
         else:
             self.get_logger().info('No command mapped for this mood combination')
 
@@ -49,10 +49,7 @@ class EarControl(Node):
         except Exception as e:
             print(f"Error with Maestro communication: {e}")
             
-    def __del__(self):
-        if self.teensy_serial.is_open:
-            self.teensy_serial.close()
-
+    
 
 def main(args=None):
     rclpy.init(args=args)
