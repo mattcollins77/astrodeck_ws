@@ -10,8 +10,15 @@ class EyeControl(Node):
     def __init__(self):
         super().__init__('eye_control')
         self.mood_command_map = {
-            ('Happy', 1, 1): '<SH1>',
-            ('Sad', 2, 1): '<SC1>',
+            ('Happy', 1, 1): '<SH0>',
+            ('Sad', 1, 1): '<SS0>',
+            ('Scared', 1, 1): '<SC0>',
+            ('Angry', 1, 1): '<SM0>',
+            ('Happy', 2, 1): '<SH1>',
+            ('Sad', 2, 1): '<SS1>',
+            ('Scared', 2, 1): '<SC1>',
+            ('Angry', 2, 1): '<SM1>',
+            ('Elec', 1, 1): '<SE>',
             # Add more mappings as needed
         }
         self.subscription = self.create_subscription(

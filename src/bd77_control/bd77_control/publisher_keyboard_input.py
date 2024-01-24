@@ -32,20 +32,44 @@ class KeyboardPublisher(Node):
             msg = MoodMsg()
 
             # Assign values based on the key pressed
-            if key == 'a':
+            if key == 'h':
                 msg.mood = "Happy"
                 msg.level = 1
                 msg.length = 1
-            elif key == 'b':
+            elif key == 's':
+                msg.mood = "Sad"
+                msg.level = 1
+                msg.length = 1
+            elif key == 'a':
+                msg.mood = "Angry"
+                msg.level = 1
+                msg.length =1
+            elif key == 'c':
+                msg.mood = "Scared"
+                msg.level = 1
+                msg.length = 1
+            elif key == 'e':
+                msg.mood = "Elec"
+                msg.level = 1
+                msg.length = 1
+            if key == '1':
+                msg.mood = "Happy"
+                msg.level = 2
+                msg.length = 1
+            elif key == '2':
                 msg.mood = "Sad"
                 msg.level = 2
                 msg.length = 1
-            elif key == 'c':
-                msg.mood = "Excited"
+            elif key == '3':
+                msg.mood = "Angry"
                 msg.level = 2
                 msg.length =1
-            elif key == 'd':
-                msg.mood = "Calm"
+            elif key == '4':
+                msg.mood = "Scared"
+                msg.level = 2
+                msg.length = 1
+            elif key == '5':
+                msg.mood = "Elec"
                 msg.level = 2
                 msg.length = 1
             else:
