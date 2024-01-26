@@ -65,7 +65,7 @@ class HeadMovementControl(Node):
         try:
             
             self.servo.runScriptSub(command)
-            self.servo.close()
+            
         except Exception as e:
             self.get_logger().info('Error with Maestro')
 
