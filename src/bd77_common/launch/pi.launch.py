@@ -32,5 +32,11 @@ def generate_launch_description():
             name='steamdeck_input_node',
             output='screen'
         ),
+        Node(
+            package='bd77_control',
+            executable='head_movement_control',
+            name='head_movement_control_node',
+            output='screen'
+        ),
         # Add more nodes as needed
     ])
