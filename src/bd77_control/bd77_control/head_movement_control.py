@@ -44,7 +44,10 @@ class HeadMovementControl(Node):
         # Add your Steam Deck Joy callback logic here
         if len(msg.axes) > 0:
             joy_axis_value = msg.axes[0]
-            blah = int(self.map_value(joy_axis_value, -1, 1, 1000, 2000))
+    # Normalize the joystick value to the range -1 to 1
+            normalized_value = max(min(joy_axis_value, 1.0), -1.0)
+    
+            blah = int(self.map_value(normalized_value, -1, 1, 1000, 2000))
             self.get_logger().info('I heard on steamdeckjoy: "%s"' % blah)
             # Normalize the joystick value to the range -1 to 1
             self.servo.setTarget(0, blah)  # Assuming 0-1 range maps to 0-6000 servo position
