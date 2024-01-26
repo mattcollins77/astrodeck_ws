@@ -40,13 +40,16 @@ class HeadMovementControl(Node):
         self.process_mood_command(mood_key)
 
     def joy_callback(self, msg):
-        minser = self.servo.getMin(0)
-        self.get_logger().info('I heard on steamdeckjoy: "%s"' % minser)
+        self.get_logger().info('I heard on steamdeckjoy: "%s"' % msg)
         # Add your Steam Deck Joy callback logic here
         if len(msg.axes) > 0:
             joy_axis_value = msg.axes[0]
-            # Send the joystick value directly to the Maestro (-1 to 1 range)
-            self.servo.setTarget(0, joy_axis_value)
+            # Normalize the joystick value to the range -1 to 1
+            normalized_value = max(min(joy_axis_value, 1.0), -1.0)
+            # Map the normalized value to the servo position range
+            servo_position = int(self.map_value(normalized_value, -1, 1, 1000, 2000))  # Assuming 3000-9000 is the servo range
+            # Send the servo position command to the Maestro
+            self.servo.setTarget(0, servo_position)
 
     def map_value(self, value, in_min, in_max, out_min, out_max):
         # Map a value from one range to another
