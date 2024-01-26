@@ -46,8 +46,10 @@ class HeadMovementControl(Node):
             joy_axis_value = msg.axes[0]
             # Normalize the joystick value to the range -1 to 1
             normalized_value = max(min(joy_axis_value, 1.0), -1.0)
-            # Send the normalized value to the Maestro
-            self.servo.setTarget(0, int(self.map_value(normalized_value, -1, 1, 0, 1) * 6000))  # Assuming 0-1 range maps to 0-6000 servo position
+            # Map the normalized value to the servo position range
+            servo_position = int(self.map_value(normalized_value, -1, 1, 100, 9000))  # Assuming 3000-9000 is the servo range
+            # Send the servo position command to the Maestro
+            self.servo.setTarget(0, servo_position)
 
     def map_value(self, value, in_min, in_max, out_min, out_max):
         # Map a value from one range to another
