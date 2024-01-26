@@ -22,6 +22,7 @@ class HeadMovementControl(Node):
             # Add more mappings as needed
         }
         self.servo = maestro.Controller('/dev/ttyACM1')
+        self.servo.setSpeed(0,0)
         self.mood_subscription = self.create_subscription(
             MoodMsg,
             'mood_topic',
