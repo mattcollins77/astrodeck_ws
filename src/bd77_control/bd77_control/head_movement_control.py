@@ -40,7 +40,8 @@ class HeadMovementControl(Node):
         self.process_mood_command(mood_key)
 
     def joy_callback(self, msg):
-        self.get_logger().info('I heard on steamdeckjoy: "%s"' % msg)
+        minser = self.servo.getMin(0)
+        self.get_logger().info('I heard on steamdeckjoy: "%s"' % minser)
         # Add your Steam Deck Joy callback logic here
         if len(msg.axes) > 0:
             joy_axis_value = msg.axes[0]
