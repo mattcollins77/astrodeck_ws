@@ -23,7 +23,9 @@ setup(
             'keyboard_input = bd77_control.publisher_keyboard_input:main',
             'sound_control = bd77_control.sound_control:main',
             'eye_control = bd77_control.eye_control:main',
-            'ear_control = bd77_control.ear_control:main'
+            'ear_control = bd77_control.ear_control:main',
+            'steamdeck_input = bd77_control.steamdeck_input_subscriber:main',
+            'head_movement_control = bd77_control.head_movement_control:main'
         ],
     },
 )
