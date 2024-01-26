@@ -49,7 +49,9 @@ class HeadMovementControl(Node):
             # Normalize the joystick value to the range -1 to 1
             self.servo.setTarget(0, blah)  # Assuming 0-1 range maps to 0-6000 servo position
 
-
+    def map_value(value, from_low, from_high, to_low, to_high):
+    # Map 'value' from the range [from_low, from_high] to [to_low, to_high]
+        return (value - from_low) * (to_high - to_low) / (from_high - from_low) + to_low
 
     def process_mood_command(self, mood_key):
         if mood_key in self.mood_command_map:
