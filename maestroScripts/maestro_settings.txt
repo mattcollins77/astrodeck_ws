@@ -10,15 +10,15 @@
   <Channels MiniMaestroServoPeriod="80000" ServoMultiplier="1">
     <!--Period = 20 ms-->
     <!--Channel 0-->
-    <Channel name="leftEar" mode="Servo" min="3968" max="8000" homemode="Goto" home="5984" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <Channel name="leftEar" mode="Servo" min="3968" max="8000" homemode="Goto" home="5984" speed="50" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 1-->
-    <Channel name="rightEar" mode="Servo" min="3968" max="8000" homemode="Goto" home="5984" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <Channel name="rightEar" mode="Servo" min="3968" max="8000" homemode="Goto" home="5984" speed="50" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 2-->
-    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <Channel name="HeadYaw" mode="Servo" min="5184" max="6784" homemode="Goto" home="5200" speed="50" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 3-->
-    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <Channel name="HeadRoll" mode="Servo" min="5184" max="6784" homemode="Goto" home="5200" speed="50" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 4-->
-    <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
+    <Channel name="HeadPitch" mode="Servo" min="5184" max="6784" homemode="Goto" home="5200" speed="50" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 5-->
     <Channel name="" mode="Servo" min="3968" max="8000" homemode="Off" home="3968" speed="0" acceleration="0" neutral="6000" range="1905" />
     <!--Channel 6-->
@@ -41,6 +41,16 @@
       <Frame name="Frame 3" duration="500">5256 6132 0 0 0 0 0 0 0 0 0 0</Frame>
       <Frame name="Frame 4" duration="500">4331 4315 0 0 0 0 0 0 0 0 0 0</Frame>
     </Sequence>
+    <Sequence name="Sequence 1">
+      <Frame name="Frame 0" duration="2000">3968 3968 0 0 0 0 0 0 0 0 0 0</Frame>
+      <Frame name="Frame 1" duration="2000">7520 7471 0 0 0 0 0 0 0 0 0 0</Frame>
+      <Frame name="Frame 2" duration="2000">4744 4777 0 0 0 0 0 0 0 0 0 0</Frame>
+      <Frame name="Frame 3" duration="2000">6479 6446 0 0 0 0 0 0 0 0 0 0</Frame>
+      <Frame name="Frame 4" duration="500">5587 5570 0 0 0 0 0 0 0 0 0 0</Frame>
+      <Frame name="Frame 5" duration="500">4645 4612 0 0 0 0 0 0 0 0 0 0</Frame>
+      <Frame name="Frame 6" duration="500">7339 7355 0 0 0 0 0 0 0 0 0 0</Frame>
+      <Frame name="Frame 7" duration="500">5917 5818 0 0 0 0 0 0 0 0 0 0</Frame>
+    </Sequence>
   </Sequences>
   <Script ScriptDone="true">
 
@@ -53,6 +63,17 @@ sub Sequence_0
   500 8000 frame_0 # Frame 2
   500 5256 6132 frame_0_1 # Frame 3
   500 4331 4315 frame_0_1 # Frame 4
+  quit# Sequence 1
+sub Sequence_1
+  500 3968 3968 0 0 0 0 
+  0 0 0 0 0 0 frame_0..11 # Frame 0
+  100 7520 7471 frame_0_1 # Frame 1
+  100  4744 4777 frame_0_1 # Frame 2
+  100 6479 6446 frame_0_1 # Frame 3
+  100 5587 5570 frame_0_1 # Frame 4
+  100 4645 4612 frame_0_1 # Frame 5
+  100 7339 7355 frame_0_1 # Frame 6
+  500 5917 5818 frame_0_1 # Frame 7
   quit
 sub frame_0..11
   11 servo

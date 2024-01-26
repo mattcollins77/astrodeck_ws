@@ -52,26 +52,23 @@ class KeyboardPublisher(Node):
                 msg.mood = "Elec"
                 msg.level = 1
                 msg.length = 1
-            if key == '1':
+            elif key == 'u':
                 msg.mood = "Happy"
                 msg.level = 2
                 msg.length = 1
-            elif key == '2':
+            elif key == 'i':
                 msg.mood = "Sad"
                 msg.level = 2
                 msg.length = 1
-            elif key == '3':
+            elif key == 'o':
                 msg.mood = "Angry"
                 msg.level = 2
                 msg.length =1
-            elif key == '4':
+            elif key == 'p':
                 msg.mood = "Scared"
                 msg.level = 2
                 msg.length = 1
-            elif key == '5':
-                msg.mood = "Elec"
-                msg.level = 2
-                msg.length = 1
+            
             else:
                 # If an irrelevant key is pressed, return without publishing
                 return
