@@ -1,1 +1,3 @@
 SUBSYSTEM=="usb", ATTRS{idVendor}=="1ffb", MODE="0666"
+SUBSYSTEM=="usb", ATTR{idVendor}=="16c0", ATTR{idProduct}="0478", SYMLINK+="MyTeensy"
+SUBSYSTEM=="usb", ATTR{idVendor}=="1ffb", ATTR{idProduct}="008a", SYMLINK+="MyMaestro"
