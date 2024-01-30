@@ -5,8 +5,9 @@ ros-${ROS_DISTRO}-demo-nodes-cpp \
 ros-${ROS_DISTRO}-demo-nodes-py \
 ros-${ROS_DISTRO}-joy \
 joystick \
-python3-serial
-python3-pip
+python3-serial \
+python3-pip \
+ros-iron-foxglove-bridge
 
 RUN mkdir -p /home/astrodeck_ws
 WORKDIR /home/astrodeck_ws
