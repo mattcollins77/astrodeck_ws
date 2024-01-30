@@ -10,7 +10,7 @@ class SteamdeckInput(Node):
         
         self.subscription = self.create_subscription(
             Joy,
-            'steamdeckjoy',
+            'joy',
             self.listener_callback,
             10)
         self.publisher_ = self.create_publisher(MoodMsg, 'mood_topic', 10)

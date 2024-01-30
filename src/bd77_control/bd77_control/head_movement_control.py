@@ -51,7 +51,16 @@ class HeadMovementControl(Node):
             blah = int(self.map_value(normalized_value, -1, 1, 4000, 8000))
             self.get_logger().info('I heard on steamdeckjoy: "%s"' % blah)
             # Normalize the joystick value to the range -1 to 1
-            self.servo.setTarget(2, blah)  # Assuming 0-1 range maps to 0-6000 servo position
+            joy_axis_value2 = msg.axes[1]
+    # Normalize the joystick value to the range -1 to 1
+            normalized_value2 = max(min(joy_axis_value2, 1.0), -1.0)
+    
+            blah2 = int(self.map_value(normalized_value2, -1, 1, 4000, 8000))
+            self.get_logger().info('I heard on steamdeckjoy: "%s"' % blah)
+            # Normalize the joystick value to the range -1 to 1
+            self.servo.setTarget(2, blah) 
+            self.servo.setTarget(3, blah2)  # Assuming 0-1 range maps to 0-6000 servo position
+         
 
     def map_value(self, value, from_low, from_high, to_low, to_high):
     # Map 'value' from the range [from_low, from_high] to [to_low, to_high]
