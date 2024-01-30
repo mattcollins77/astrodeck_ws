@@ -31,7 +31,7 @@ class HeadMovementControl(Node):
 
         self.joy_subscription = self.create_subscription(
             Joy,
-            'steamdeckjoy',
+            'joy',
             self.joy_callback,
             10)
       
