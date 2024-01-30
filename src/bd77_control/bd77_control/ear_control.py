@@ -45,7 +45,7 @@ class EarControl(Node):
     def communicate_with_maestro(self, command):
         try:
             # Open a connection to the Maestro controller
-            servo = maestro.Controller('/dev/ttyACM1')
+            servo = maestro.Controller('/dev/MyMaestro')
 
             # Run the script subroutine on the Maestro
           
