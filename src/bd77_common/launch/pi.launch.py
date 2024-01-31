@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch.actions import Shutdown,IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
 import os
 from ament_index_python import get_package_share_directory
 from launch_ros.actions import Node
@@ -41,7 +41,7 @@ def generate_launch_description():
             output='screen'
         ),
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('foxglove_bridge'), 'launch/foxglove_bridge_launch.xml')
+            XMLLaunchDescriptionSource(os.path.join(get_package_share_directory('foxglove_bridge'), 'launch/foxglove_bridge_launch.xml')
         )),
         # Add more nodes as needed
     ])
