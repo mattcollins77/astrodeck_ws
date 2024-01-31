@@ -39,8 +39,6 @@ def generate_launch_description():
             name='head_movement_control_node',
             output='screen'
         ),
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([foxglove_bridge, 'foxglove_bridge_launch.xml'])
-        ),
+        
         # Add more nodes as needed
     ])
