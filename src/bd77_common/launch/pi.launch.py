@@ -41,7 +41,7 @@ def generate_launch_description():
             output='screen'
         ),
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('foxglove_bridge'), 'foxglove_bridge_launch.xml')
+            PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('foxglove_bridge'), 'launch/foxglove_bridge_launch.xml')
         )),
         # Add more nodes as needed
     ])
