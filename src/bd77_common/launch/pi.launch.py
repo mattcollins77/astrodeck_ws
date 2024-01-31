@@ -28,12 +28,7 @@ def generate_launch_description():
             name='ear_control_node',
             output='screen'
         ),
-        Node(
-            package='bd77_control',
-            executable='steamdeck_input',
-            name='steamdeck_input_node',
-            output='screen'
-        ),
+       
         Node(
             package='bd77_control',
             executable='head_movement_control',
