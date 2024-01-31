@@ -7,4 +7,5 @@ source /opt/ros/${ROS_DISTRO}/setup.bash
 colcon build --symlink-install
 source install/setup.bash
 # Execute the ROS launch file
+ros2 launch bd77_common pi.launch.py
 /bin/bash
