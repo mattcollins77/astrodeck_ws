@@ -1,5 +1,6 @@
 from launch import LaunchDescription
-from launch.actions import Shutdown
+from launch.actions import Shutdown,IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 from launch_ros.actions import Node
 
@@ -37,6 +38,9 @@ def generate_launch_description():
             executable='head_movement_control',
             name='head_movement_control_node',
             output='screen'
+        ),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([foxglove_bridge, 'foxglove_bridge_launch.xml'])
         ),
         # Add more nodes as needed
     ])
