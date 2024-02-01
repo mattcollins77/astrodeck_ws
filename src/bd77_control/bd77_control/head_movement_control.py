@@ -10,15 +10,15 @@ class HeadMovementControl(Node):
     def __init__(self):
         super().__init__('head_movement_control')
         self.mood_command_map = {
-            ('Happy', 1, 1): 0,
+            ('Happy', 1, 1): 3,
             ('Sad', 1, 1): 1,
-            ('Scared', 1, 1): 2,
-            ('Angry', 1, 1): 3,
+            ('Scared', 1, 1): 5,
+            ('Angry', 1, 1): 4,
             ('Happy', 2, 1): 4,
             ('Sad', 2, 1): 5,
             ('Scared', 2, 1): 6,
-            ('Angry', 2, 1): 7,
-            ('Elec', 1, 1): 8,
+            ('Angry', 2, 1): 4,
+            ('Elec', 1, 1): 6,
             # Add more mappings as needed
         }
         self.servo = maestro.Controller('/dev/MyMaestro')
