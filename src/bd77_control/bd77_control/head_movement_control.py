@@ -14,12 +14,12 @@ class HeadMovementControl(Node):
 
         self.mood_command_map = {
             ('Happy', 1, 1): 3,
-            ('Sad', 1, 1): 1,
-            ('Scared', 1, 1): 5,
+            ('Sad', 1, 1): 5,
+            ('Scared', 1, 1): 4,
             ('Angry', 1, 1): 4,
-            ('Happy', 2, 1): 4,
+            ('Happy', 2, 1): 2,
             ('Sad', 2, 1): 5,
-            ('Scared', 2, 1): 6,
+            ('Scared', 2, 1): 4,
             ('Angry', 2, 1): 4,
             ('Elec', 1, 1): 6,
             # Add more mappings as needed
