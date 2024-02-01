@@ -44,9 +44,18 @@ class HeadMovementControl(Node):
 
     def joy_callback(self, msg):
         # Add your Steam Deck Joy callback logic here
-        if len(msg.buttons) > 1 and msg.buttons[1] == 1:
+        if len(msg.buttons) > 1 and msg.buttons[0] == 1:
             # Button[1] is pressed
             self.publish_mood("Happy", 1, 1)
+        if len(msg.buttons) > 1 and msg.buttons[1] == 1:
+            # Button[1] is pressed
+            self.publish_mood("Sad", 1, 1)
+        if len(msg.buttons) > 1 and msg.buttons[2] == 1:
+            # Button[1] is pressed
+            self.publish_mood("Angry", 1, 1)
+        if len(msg.buttons) > 1 and msg.buttons[3] == 1:
+            # Button[1] is pressed
+            self.publish_mood("Scared", 1, 1)
         if len(msg.axes) > 0:
             joy_axis_value_left_x = msg.axes[0]
             left_x = int(self.map_value(max(min(joy_axis_value_left_x, 1.0), -1.0), -1, 1, 4032, 8444))
