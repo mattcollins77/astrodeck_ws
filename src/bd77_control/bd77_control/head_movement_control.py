@@ -62,19 +62,23 @@ class HeadMovementControl(Node):
         if self.joystick_paused:
             return
         if len(msg.axes) > 0:
-             joy_axis_value_left_x = msg.axes[0]
-        joy_axis_value_left_y = msg.axes[1]
-        joy_axis_value_right_x = msg.axes[3]
-        joy_axis_value_right_y = msg.axes[4]
+            joy_axis_value_left_x = msg.axes[0]
+            joy_axis_value_left_y = msg.axes[1]
+            joy_axis_value_right_x = msg.axes[3]
+            joy_axis_value_right_y = msg.axes[4]
 
-        # Define dead zone thresholds (adjust as needed)
-        dead_zone_threshold = 0.1  # Adjust this threshold as needed
+            # Define dead zone thresholds (adjust as needed)
+            dead_zone_threshold = 0.1  # Adjust this threshold as needed
 
-        # Check if joystick values are within dead zone
-        if abs(joy_axis_value_left_x) > dead_zone_threshold or \
-           abs(joy_axis_value_left_y) > dead_zone_threshold or \
-           abs(joy_axis_value_right_x) > dead_zone_threshold or \
-           abs(joy_axis_value_right_y) > dead_zone_threshold:
+            # Apply centering correction if joystick values are close to center
+            if abs(joy_axis_value_left_x) <= dead_zone_threshold:
+                joy_axis_value_left_x = 0.0
+            if abs(joy_axis_value_left_y) <= dead_zone_threshold:
+                joy_axis_value_left_y = 0.0
+            if abs(joy_axis_value_right_x) <= dead_zone_threshold:
+                joy_axis_value_right_x = 0.0
+            if abs(joy_axis_value_right_y) <= dead_zone_threshold:
+                joy_axis_value_right_y = 0.0
 
             # Perform joystick processing here
             left_x = int(self.map_value(max(min(joy_axis_value_left_x, 1.0), -1.0), -1, 1, 8444, 4032))
@@ -85,7 +89,6 @@ class HeadMovementControl(Node):
             self.servo.setTarget(2, left_x)
             self.servo.setTarget(5, left_y)
             self.servo.setTarget(3, right_x)
-         
 
     def map_value(self, value, from_low, from_high, to_low, to_high):
     # Map 'value' from the range [from_low, from_high] to [to_low, to_high]
