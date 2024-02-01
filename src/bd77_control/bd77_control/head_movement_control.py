@@ -9,6 +9,9 @@ class HeadMovementControl(Node):
 
     def __init__(self):
         super().__init__('head_movement_control')
+        self.joystick_paused = False
+        self.timer = self.create_timer(4.0, self.unpause_joystick)
+
         self.mood_command_map = {
             ('Happy', 1, 1): 3,
             ('Sad', 1, 1): 1,
@@ -56,6 +59,8 @@ class HeadMovementControl(Node):
         if len(msg.buttons) > 1 and msg.buttons[3] == 1:
             # Button[1] is pressed
             self.publish_mood("Scared", 1, 1)
+        if self.joystick_paused:
+            return
         if len(msg.axes) > 0:
             joy_axis_value_left_x = msg.axes[0]
             left_x = int(self.map_value(max(min(joy_axis_value_left_x, 1.0), -1.0), -1, 1, 4032, 8444))
@@ -77,7 +82,12 @@ class HeadMovementControl(Node):
     def map_value(self, value, from_low, from_high, to_low, to_high):
     # Map 'value' from the range [from_low, from_high] to [to_low, to_high]
         return (value - from_low) * (to_high - to_low) / (from_high - from_low) + to_low
-
+    
+    def unpause_joystick(self):
+        # Timer callback to unpause joystick input
+        self.joystick_paused = False
+        self.get_logger().info('Joystick input unpaused')
+    
     def publish_mood(self, mood, level, length):
         msg = MoodMsg()
         msg.mood = mood
@@ -85,7 +95,7 @@ class HeadMovementControl(Node):
         msg.length = length
         self.publisher_.publish(msg)
         self.get_logger().info('Publishing Mood: "%s", Level: %d, Length: %d' % (msg.mood, msg.level, msg.length))
-
+        self.joystick_paused = True
 
     def process_mood_command(self, mood_key):
         if mood_key in self.mood_command_map:
