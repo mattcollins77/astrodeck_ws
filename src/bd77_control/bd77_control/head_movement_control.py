@@ -95,11 +95,12 @@ class HeadMovementControl(Node):
         msg.length = length
         self.publisher_.publish(msg)
         self.get_logger().info('Publishing Mood: "%s", Level: %d, Length: %d' % (msg.mood, msg.level, msg.length))
-        self.joystick_paused = True
+        
 
     def process_mood_command(self, mood_key):
         if mood_key in self.mood_command_map:
             command = self.mood_command_map[mood_key]
+            self.joystick_paused = True
             self.communicate_with_maestro(command)
         else:
             self.get_logger().info('No command mapped for this mood combination')
