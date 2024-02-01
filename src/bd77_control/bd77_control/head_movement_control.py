@@ -54,10 +54,10 @@ class HeadMovementControl(Node):
             joy_axis_value_left_y = msg.axes[1]
             left_y = int(self.map_value(max(min(joy_axis_value_left_y, 1.0), -1.0), -1, 1, 3964, 5776))
             
-            joy_axis_value_right_x = msg.axes[0]
+            joy_axis_value_right_x = msg.axes[3]
             right_x = int(self.map_value(max(min(joy_axis_value_right_x, 1.0), -1.0), -1, 1, 3964, 5224))
             
-            joy_axis_value_right_y = msg.axes[1]
+            joy_axis_value_right_y = msg.axes[4]
             right_y = int(self.map_value(max(min(joy_axis_value_right_y, 1.0), -1.0), -1, 1, 3964, 5776))
             
             self.servo.setTarget(2, left_x) 
