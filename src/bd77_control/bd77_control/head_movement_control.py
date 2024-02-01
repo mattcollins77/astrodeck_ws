@@ -62,20 +62,28 @@ class HeadMovementControl(Node):
         if self.joystick_paused:
             return
         if len(msg.axes) > 0:
-            joy_axis_value_left_x = msg.axes[0]
-            left_x = int(self.map_value(max(min(joy_axis_value_left_x, 1.0), -1.0), -1, 1, 4032, 8444))
-            
-            joy_axis_value_left_y = msg.axes[1]
-            left_y = int(self.map_value(max(min(joy_axis_value_left_y, 1.0), -1.0), -1, 1, 3964, 5776))
-            
-            joy_axis_value_right_x = msg.axes[3]
-            right_x = int(self.map_value(max(min(joy_axis_value_right_x, 1.0), -1.0), -1, 1, 3964, 5224))
-            
-            joy_axis_value_right_y = msg.axes[4]
-            right_y = int(self.map_value(max(min(joy_axis_value_right_y, 1.0), -1.0), -1, 1, 3964, 5776))
-            
-            self.servo.setTarget(2, left_x) 
-            self.servo.setTarget(5, left_y)  
+             joy_axis_value_left_x = msg.axes[0]
+        joy_axis_value_left_y = msg.axes[1]
+        joy_axis_value_right_x = msg.axes[3]
+        joy_axis_value_right_y = msg.axes[4]
+
+        # Define dead zone thresholds (adjust as needed)
+        dead_zone_threshold = 0.1  # Adjust this threshold as needed
+
+        # Check if joystick values are within dead zone
+        if abs(joy_axis_value_left_x) > dead_zone_threshold or \
+           abs(joy_axis_value_left_y) > dead_zone_threshold or \
+           abs(joy_axis_value_right_x) > dead_zone_threshold or \
+           abs(joy_axis_value_right_y) > dead_zone_threshold:
+
+            # Perform joystick processing here
+            left_x = int(self.map_value(max(min(joy_axis_value_left_x, 1.0), -1.0), -1, 1, 8444, 4032))
+            left_y = int(self.map_value(max(min(joy_axis_value_left_y, 1.0), -1.0), -1, 1, 5776, 3964))
+            right_x = int(self.map_value(max(min(joy_axis_value_right_x, 1.0), -1.0), -1, 1, 5224, 3964))
+            right_y = int(self.map_value(max(min(joy_axis_value_right_y, 1.0), -1.0), -1, 1, 5776, 3964))
+
+            self.servo.setTarget(2, left_x)
+            self.servo.setTarget(5, left_y)
             self.servo.setTarget(3, right_x)
          
 
