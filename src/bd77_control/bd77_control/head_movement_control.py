@@ -34,6 +34,8 @@ class HeadMovementControl(Node):
             'joy',
             self.joy_callback,
             10)
+        
+        self.publisher_ = self.create_publisher(MoodMsg, 'mood_topic', 10)
       
     def mood_callback(self, msg):
         self.get_logger().info('I heard on mood_topic: "%s"' % msg.mood)
@@ -66,6 +68,15 @@ class HeadMovementControl(Node):
     def map_value(self, value, from_low, from_high, to_low, to_high):
     # Map 'value' from the range [from_low, from_high] to [to_low, to_high]
         return (value - from_low) * (to_high - to_low) / (from_high - from_low) + to_low
+
+    def publish_mood(self, mood, level, length):
+        msg = MoodMsg()
+        msg.mood = mood
+        msg.level = level
+        msg.length = length
+        self.publisher_.publish(msg)
+        self.get_logger().info('Publishing Mood: "%s", Level: %d, Length: %d' % (msg.mood, msg.level, msg.length))
+
 
     def process_mood_command(self, mood_key):
         if mood_key in self.mood_command_map:
