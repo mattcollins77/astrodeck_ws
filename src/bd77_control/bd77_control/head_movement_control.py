@@ -42,23 +42,25 @@ class HeadMovementControl(Node):
 
     def joy_callback(self, msg):
         # Add your Steam Deck Joy callback logic here
+        if len(msg.buttons) > 1 and msg.buttons[1] == 1:
+            # Button[1] is pressed
+            self.publish_mood("Happy", 1, 1)
         if len(msg.axes) > 0:
-            joy_axis_value = msg.axes[0]
-    # Normalize the joystick value to the range -1 to 1
-            normalized_value = max(min(joy_axis_value, 1.0), -1.0)
-    
-            blah = int(self.map_value(normalized_value, -1, 1, 4032, 8444))
-            self.get_logger().info('I heard on steamdeckjoy: "%s"' % blah)
-            # Normalize the joystick value to the range -1 to 1
-            joy_axis_value2 = msg.axes[1]
-    # Normalize the joystick value to the range -1 to 1
-            normalized_value2 = max(min(joy_axis_value2, 1.0), -1.0)
-    
-            blah2 = int(self.map_value(normalized_value2, -1, 1, 3964, 5776))
-            self.get_logger().info('I heard on steamdeckjoy: "%s"' % blah)
-            # Normalize the joystick value to the range -1 to 1
-            self.servo.setTarget(2, blah) 
-            self.servo.setTarget(5, blah2)  # Assuming 0-1 range maps to 0-6000 servo position
+            joy_axis_value_left_x = msg.axes[0]
+            left_x = int(self.map_value(max(min(joy_axis_value_left_x, 1.0), -1.0), -1, 1, 4032, 8444))
+            
+            joy_axis_value_left_y = msg.axes[1]
+            left_y = int(self.map_value(max(min(joy_axis_value_left_y, 1.0), -1.0), -1, 1, 3964, 5776))
+            
+            joy_axis_value_right_x = msg.axes[0]
+            right_x = int(self.map_value(max(min(joy_axis_value_right_x, 1.0), -1.0), -1, 1, 3964, 5224))
+            
+            joy_axis_value_right_y = msg.axes[1]
+            right_y = int(self.map_value(max(min(joy_axis_value_right_y, 1.0), -1.0), -1, 1, 3964, 5776))
+            
+            self.servo.setTarget(2, left_x) 
+            self.servo.setTarget(5, left_y)  
+            self.servo.setTarget(3, right_x)
          
 
     def map_value(self, value, from_low, from_high, to_low, to_high):
