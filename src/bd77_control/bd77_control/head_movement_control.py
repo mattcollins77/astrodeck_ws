@@ -68,73 +68,81 @@ class HeadMovementControl(Node):
 
     def joy_callback(self, msg):
         current_time = time.time()
-        if self.override_timestamp and current_time - self.override_timestamp >= 20:
-            self.random_mode_active = True
-            self.override_timestamp = None
         if self.random_mode_active:
-            # Handle random movements within servo limits
+            if not self.override_timestamp:
+                self.override_timestamp = current_time
+            elif current_time - self.override_timestamp >= 20:
+                self.override_timestamp = None
+                self.random_mode_active = False
+
+        # Handle random movements within servo limits
+        if self.random_mode_active:
             # Generate random values within a smaller range for servos 2 and 5
             left_x = random.randint(5000, 7000)
             left_y = random.randint(4500, 5250)
+            right_x = random.randint(5000, 7000)
+
             # Set the random values to servos
             self.servo.setTarget(2, left_x)
             self.servo.setTarget(5, left_y)
-            self.servo.setTarget(3, 5224)  # Adjust as needed for servo 3
+            self.servo.setTarget(3, right_x)
 
             # Introduce a delay between random movements (adjust as needed)
-            time.sleep(random.uniform(2.0, 5.0))  # Random delay between 1 and 5 seconds
-        else:
+            time.sleep(random.uniform(2.0, 5.0))  # Random delay between 2 and 5 seconds
+
         # Add your Steam Deck Joy callback logic here
-            if len(msg.buttons) > 1 and msg.buttons[0] == 1:
-                # Button[1] is pressed
-                self.publish_mood("Happy", 1, 1)
-                time.sleep(0.5)
-            if len(msg.buttons) > 1 and msg.buttons[1] == 1:
-                # Button[1] is pressed
-                self.publish_mood("Sad", 1, 1)
-                time.sleep(0.5)
+        if len(msg.buttons) > 1 and msg.buttons[0] == 1:
+            # Button[1] is pressed
+            self.publish_mood("Happy", 1, 1)
+            self.override_timestamp = current_time  # Reset the override timestamp
+            time.sleep(0.5)
+        if len(msg.buttons) > 1 and msg.buttons[1] == 1:
+            # Button[2] is pressed
+            self.publish_mood("Sad", 1, 1)
+            self.override_timestamp = current_time  # Reset the override timestamp
+            time.sleep(0.5)
+        if len(msg.buttons) > 1 and msg.buttons[2] == 1:
+            # Button[3] is pressed
+            self.publish_mood("Angry", 1, 1)
+            self.override_timestamp = current_time  # Reset the override timestamp
+            time.sleep(0.5)
+        if len(msg.buttons) > 1 and msg.buttons[3] == 1:
+            # Button[4] is pressed
+            self.publish_mood("Scared", 1, 1)
+            self.override_timestamp = current_time  # Reset the override timestamp
+            time.sleep(0.5)
 
+        if self.joystick_paused:
+            return
+        if len(msg.axes) > 0:
+            joy_axis_value_left_x = msg.axes[0]
+            joy_axis_value_left_y = msg.axes[1]
+            joy_axis_value_right_x = msg.axes[3]
+            joy_axis_value_right_y = msg.axes[4]
 
-            if len(msg.buttons) > 1 and msg.buttons[2] == 1:
-                # Button[1] is pressed
-                self.publish_mood("Angry", 1, 1)
-                time.sleep(0.5)
+            # Define dead zone thresholds (adjust as needed)
+            dead_zone_threshold = 0.1  # Adjust this threshold as needed
 
-            if len(msg.buttons) > 1 and msg.buttons[3] == 1:
-                # Button[1] is pressed
-                self.publish_mood("Scared", 1, 1)
-                time.sleep(0.5)
+            # Apply centering correction if joystick values are close to center
+            if abs(joy_axis_value_left_x) <= dead_zone_threshold:
+                joy_axis_value_left_x = 0.0
+            if abs(joy_axis_value_left_y) <= dead_zone_threshold:
+                joy_axis_value_left_y = 0.0
+            if abs(joy_axis_value_right_x) <= dead_zone_threshold:
+                joy_axis_value_right_x = 0.0
+            if abs(joy_axis_value_right_y) <= dead_zone_threshold:
+                joy_axis_value_right_y = 0.0
 
-            if self.joystick_paused:
-                return
-            if len(msg.axes) > 0:
-                joy_axis_value_left_x = msg.axes[0]
-                joy_axis_value_left_y = msg.axes[1]
-                joy_axis_value_right_x = msg.axes[3]
-                joy_axis_value_right_y = msg.axes[4]
+            # Perform joystick processing here
+            left_x = int(self.map_value(max(min(joy_axis_value_left_x, 1.0), -1.0), -1, 1, 8444, 4032))
+            left_y = int(self.map_value(max(min(joy_axis_value_left_y, 1.0), -1.0), -1, 1, 5776, 3964))
+            right_x = int(self.map_value(max(min(joy_axis_value_right_x, 1.0), -1.0), -1, 1, 5224, 3964))
+            right_y = int(self.map_value(max(min(joy_axis_value_right_y, 1.0), -1.0), -1, 1, 5776, 3964))
 
-                # Define dead zone thresholds (adjust as needed)
-                dead_zone_threshold = 0.1  # Adjust this threshold as needed
+            self.servo.setTarget(2, left_x)
+            self.servo.setTarget(5, left_y)
+            self.servo.setTarget(3, right_x)
 
-                # Apply centering correction if joystick values are close to center
-                if abs(joy_axis_value_left_x) <= dead_zone_threshold:
-                    joy_axis_value_left_x = 0.0
-                if abs(joy_axis_value_left_y) <= dead_zone_threshold:
-                    joy_axis_value_left_y = 0.0
-                if abs(joy_axis_value_right_x) <= dead_zone_threshold:
-                    joy_axis_value_right_x = 0.0
-                if abs(joy_axis_value_right_y) <= dead_zone_threshold:
-                    joy_axis_value_right_y = 0.0
-
-                # Perform joystick processing here
-                left_x = int(self.map_value(max(min(joy_axis_value_left_x, 1.0), -1.0), -1, 1, 8444, 4032))
-                left_y = int(self.map_value(max(min(joy_axis_value_left_y, 1.0), -1.0), -1, 1, 5776, 3964))
-                right_x = int(self.map_value(max(min(joy_axis_value_right_x, 1.0), -1.0), -1, 1, 5224, 3964))
-                right_y = int(self.map_value(max(min(joy_axis_value_right_y, 1.0), -1.0), -1, 1, 5776, 3964))
-
-                self.servo.setTarget(2, left_x)
-                self.servo.setTarget(5, left_y)
-                self.servo.setTarget(3, right_x)
 
     def map_value(self, value, from_low, from_high, to_low, to_high):
     # Map 'value' from the range [from_low, from_high] to [to_low, to_high]
