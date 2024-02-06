@@ -12,7 +12,6 @@ class HeadMovementControl(Node):
     def __init__(self):
         super().__init__('head_movement_control')
         self.joystick_paused = False
-        self.timer = self.create_timer(4.0, self.unpause_joystick)
         self.random_mode_active = False
         self.last_non_random_mood = None
         self.override_timestamp = None  # Variable to store timestamp when overridden
@@ -28,6 +27,9 @@ class HeadMovementControl(Node):
             ('Scared', 2, 1): 4,
             ('Angry', 2, 1): 4,
             ('Elec', 1, 1): 6,
+            ('Random', 1, 1): 99,
+            ('Random', 0, 1): 100,
+            
             # Add more mappings as needed
         }
         self.servo = maestro.Controller('/dev/MyMaestro')
@@ -51,9 +53,9 @@ class HeadMovementControl(Node):
         mood_key = (msg.mood, msg.level, msg.length)
         current_time = time.time()
 
-        if mood_key == "Random,1,1":
+        if mood_key == 99:
             self.set_random_mode(True)
-        elif mood_key == "Random,0,1":
+        elif mood_key == 100:
             self.set_random_mode(False)
         else:
             if self.random_mode_active:
