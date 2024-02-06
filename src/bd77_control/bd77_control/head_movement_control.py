@@ -28,9 +28,8 @@ class HeadMovementControl(Node):
             ('Angry', 2, 1): 4,
             ('Elec', 1, 1): 6,
             ('Random', 1, 1): 99,
-            ('Random', 0, 1): 100,
+            ('Random', 0, 1): 100
             
-            # Add more mappings as needed
         }
         self.servo = maestro.Controller('/dev/MyMaestro')
         self.servo.setSpeed(0, 0)
@@ -52,10 +51,12 @@ class HeadMovementControl(Node):
         self.get_logger().info('I heard on mood_topic: "%s"' % msg.mood)
         mood_key = (msg.mood, msg.level, msg.length)
         current_time = time.time()
+        command = self.mood_command_map.get(mood_key)
+
         self.get_logger().info('mood key: "%s"' % mood_key)
-        if mood_key == 99:
+        if command == 99:
             self.set_random_mode(True)
-        elif mood_key == 100:
+        elif command == 100:
             self.set_random_mode(False)
         else:
             if self.random_mode_active:
@@ -108,7 +109,8 @@ class HeadMovementControl(Node):
     def joy_callback(self, msg):
         dead_zone_threshold = 0.05  # Adjust this value based on your joystick's sensitivity
         significant_movement = any(abs(axis) > dead_zone_threshold for axis in msg.axes)
-   
+        self.process_button_input(msg)
+
         if significant_movement:
             self.get_logger().info('Joystick input processed')
             self.process_joy_input(msg)
@@ -120,28 +122,39 @@ class HeadMovementControl(Node):
             # This else block is optional, just for logging purposes
             self.get_logger().info('Joystick movement within dead zone, ignored')
 
-    def process_joy_input(self, msg):
-       
-        # Handle random movements within servo limits
-  
-        # Add your Steam Deck Joy callback logic here
+
+    def process_button_input(self, msg):
+
         if len(msg.buttons) > 1 and msg.buttons[0] == 1:
             # Button[1] is pressed
             self.publish_mood("Happy", 1, 1)
+            if self.random_mode_active:
+                self.get_logger().info('About to suspend random')
+                self.suspend_random_mode()
             time.sleep(0.5)
         if len(msg.buttons) > 1 and msg.buttons[1] == 1:
             # Button[2] is pressed
             self.publish_mood("Sad", 1, 1)
+            if self.random_mode_active:
+                self.get_logger().info('About to suspend random')
+                self.suspend_random_mode()
             time.sleep(0.5)
         if len(msg.buttons) > 1 and msg.buttons[2] == 1:
             # Button[3] is pressed
             self.publish_mood("Angry", 1, 1)
+            if self.random_mode_active:
+                self.get_logger().info('About to suspend random')
+                self.suspend_random_mode()
             time.sleep(0.5)
         if len(msg.buttons) > 1 and msg.buttons[3] == 1:
             # Button[4] is pressed
             self.publish_mood("Scared", 1, 1)
+            if self.random_mode_active:
+                self.get_logger().info('About to suspend random')
+                self.suspend_random_mode()
             time.sleep(0.5)
 
+    def process_joy_input(self, msg):
         if len(msg.axes) > 0:
             joy_axis_value_left_x = msg.axes[0]
             joy_axis_value_left_y = msg.axes[1]
