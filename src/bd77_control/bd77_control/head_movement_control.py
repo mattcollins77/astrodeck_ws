@@ -29,7 +29,6 @@ class HeadMovementControl(Node):
             ('Elec', 1, 1): 6,
             ('Random', 1, 1): 99,
             ('Random', 0, 1): 100
-            
         }
         self.servo = maestro.Controller('/dev/MyMaestro')
         self.servo.setSpeed(0, 0)
@@ -53,7 +52,7 @@ class HeadMovementControl(Node):
         current_time = time.time()
         command = self.mood_command_map.get(mood_key)
 
-        self.get_logger().info('mood key: "%s"' % mood_key)
+        self.get_logger().info('mood key: "%s"' % command)
         if command == 99:
             self.set_random_mode(True)
         elif command == 100:
