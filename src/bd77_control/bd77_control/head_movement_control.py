@@ -3,7 +3,6 @@ from rclpy.node import Node
 from . import maestro
 from sensor_msgs.msg import Joy
 from bd77_common.msg import MoodMsg  # Replace with your actual package name
-import serial
 import time
 import random  # Import the random module
 
@@ -30,7 +29,7 @@ class HeadMovementControl(Node):
             # Add more mappings as needed
         }
         self.servo = maestro.Controller('/dev/MyMaestro')
-        self.servo.setSpeed(0,0)
+        self.servo.setSpeed(0, 0)
         self.mood_subscription = self.create_subscription(
             MoodMsg,
             'mood_topic',
@@ -80,7 +79,7 @@ class HeadMovementControl(Node):
             # Generate random values within a smaller range for servos 2 and 5
             left_x = random.randint(5000, 7000)
             left_y = random.randint(4500, 5250)
-            right_x = random.randint(5000, 7000)
+            right_x = random.randint(4200, 5000)
 
             # Set the random values to servos
             self.servo.setTarget(2, left_x)
@@ -142,7 +141,6 @@ class HeadMovementControl(Node):
             self.servo.setTarget(2, left_x)
             self.servo.setTarget(5, left_y)
             self.servo.setTarget(3, right_x)
-
 
     def map_value(self, value, from_low, from_high, to_low, to_high):
     # Map 'value' from the range [from_low, from_high] to [to_low, to_high]
