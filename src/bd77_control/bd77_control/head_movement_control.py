@@ -145,52 +145,60 @@ class HeadMovementControl(Node):
                 self.suspend_random_mode()
             time.sleep(0.5)
 
+
+
+
     def process_joy_input(self, msg):
-        if len(msg.axes) > 0:
-            joy_axis_value_left_x = msg.axes[0]
-            joy_axis_value_left_y = msg.axes[1]
-            joy_axis_value_right_x = msg.axes[3]
-            joy_axis_value_right_y = msg.axes[4]
+        dead_zone_threshold = 0.1
 
-            # Define dead zone thresholds (adjust as needed)
-            dead_zone_threshold = 0.1  # Adjust this threshold as needed
+        # Initialize variables to track significant movement
+        significant_movement = False
+        joy_axis_values = [msg.axes[0], msg.axes[1], msg.axes[3], msg.axes[4]]
 
-            # Apply centering correction if joystick values are close to center
-            if abs(joy_axis_value_left_x) <= dead_zone_threshold:
-                joy_axis_value_left_x = 0.0
-            else:
-                if self.random_mode_active:
-                    self.get_logger().info('About to suspend random')
-                    self.suspend_random_mode()
-            if abs(joy_axis_value_left_y) <= dead_zone_threshold:
-                joy_axis_value_left_y = 0.0
-            else:
-                if self.random_mode_active:
-                    self.get_logger().info('About to suspend random')
-                    self.suspend_random_mode()
-            
-            if abs(joy_axis_value_right_x) <= dead_zone_threshold:
-                joy_axis_value_right_x = 0.0
-            else:
-                if self.random_mode_active:
-                    self.get_logger().info('About to suspend random')
-                    self.suspend_random_mode()
-            if abs(joy_axis_value_right_y) <= dead_zone_threshold:
-                joy_axis_value_right_y = 0.0
-            else:
-                if self.random_mode_active:
-                    self.get_logger().info('About to suspend random')
-                    self.suspend_random_mode()
+        # Check for significant movement in any joystick axis
+        for axis_value in joy_axis_values:
+            if abs(axis_value) > dead_zone_threshold:
+                significant_movement = True
+                break
 
-            # Perform joystick processing here
-            left_x = int(self.map_value(max(min(joy_axis_value_left_x, 1.0), -1.0), -1, 1, 8444, 4032))
-            left_y = int(self.map_value(max(min(joy_axis_value_left_y, 1.0), -1.0), -1, 1, 5776, 3964))
-            right_x = int(self.map_value(max(min(joy_axis_value_right_x, 1.0), -1.0), -1, 1, 5224, 3964))
-            right_y = int(self.map_value(max(min(joy_axis_value_right_y, 1.0), -1.0), -1, 1, 5776, 3964))
+        if significant_movement:
+            if self.random_mode_active:
+                # Suspend random movement due to significant joystick input
+                self.get_logger().info('Suspending random movement due to joystick input.')
+                self.suspend_random_mode()
+            # Process joystick input for servo movement
+            self.process_servo_movement(joy_axis_values)
+        else:
+            if not self.random_mode_active:
+                # Optionally center servos only if random mode is not active
+                self.center_servos()
+            self.get_logger().info('Joystick in dead zone, random movement continues or servos centered.')
 
-            self.servo.setTarget(2, left_x)
-            self.servo.setTarget(5, left_y)
-            self.servo.setTarget(3, right_x)
+    def process_servo_movement(self, joy_axis_values):
+        joy_axis_value_left_x, joy_axis_value_left_y, joy_axis_value_right_x, joy_axis_value_right_y = joy_axis_values
+
+   # Perform joystick processing here
+        left_x = int(self.map_value(max(min(joy_axis_value_left_x, 1.0), -1.0), -1, 1, 8444, 4032))
+        left_y = int(self.map_value(max(min(joy_axis_value_left_y, 1.0), -1.0), -1, 1, 5776, 3964))
+        right_x = int(self.map_value(max(min(joy_axis_value_right_x, 1.0), -1.0), -1, 1, 5224, 3964))
+        right_y = int(self.map_value(max(min(joy_axis_value_right_y, 1.0), -1.0), -1, 1, 5776, 3964))
+
+        self.servo.setTarget(2, left_x)
+        self.servo.setTarget(5, left_y)
+        self.servo.setTarget(3, right_x)
+
+    
+    def center_servos(self):
+        left_x = int(self.map_value(max(min(0, 1.0), -1.0), -1, 1, 8444, 4032))
+        left_y = int(self.map_value(max(min(0, 1.0), -1.0), -1, 1, 5776, 3964))
+        right_x = int(self.map_value(max(min(0, 1.0), -1.0), -1, 1, 5224, 3964))
+        right_y = int(self.map_value(max(min(0, 1.0), -1.0), -1, 1, 5776, 3964))
+
+        # Center servos to their neutral positions
+        self.servo.setTarget(2, left_x)
+        self.servo.setTarget(5, left_y)
+        self.servo.setTarget(3, right_x)
+        self.get_logger().info('Servos centered.')      
 
     def map_value(self, value, from_low, from_high, to_low, to_high):
     # Map 'value' from the range [from_low, from_high] to [to_low, to_high]
