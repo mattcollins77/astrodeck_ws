@@ -169,9 +169,8 @@ class HeadMovementControl(Node):
             # Process joystick input for servo movement
             self.process_servo_movement(joy_axis_values)
         else:
-            if not self.random_mode_active:
-                # Optionally center servos only if random mode is not active
-                self.center_servos()
+            
+            self.center_servos()
             
     def process_servo_movement(self, joy_axis_values):
         joy_axis_value_left_x, joy_axis_value_left_y, joy_axis_value_right_x, joy_axis_value_right_y = joy_axis_values
