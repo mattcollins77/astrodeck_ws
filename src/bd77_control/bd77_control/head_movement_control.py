@@ -16,6 +16,7 @@ class HeadMovementControl(Node):
         self.last_non_random_mood = None
         self.override_timestamp = None  # Variable to store timestamp when overridden
         self.override_timer = None
+        self.random_movement_timer = None
 
         self.mood_command_map = {
             ('Happy', 1, 1): 3,
