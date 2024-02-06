@@ -19,6 +19,8 @@ class SoundControl(Node):
             ('Scared', 2, 1): '<SC1>',
             ('Angry', 2, 1): '<SM1>',
             ('Elec', 1, 1): '<SE>',
+            ('Random', 1, 1): '<M1>',
+            ('Random', 0, 1): '<M0>',
             # Add more mappings as needed
         }
         self.subscription = self.create_subscription(
