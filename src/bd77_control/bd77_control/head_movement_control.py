@@ -107,21 +107,12 @@ class HeadMovementControl(Node):
         self.random_movement_timer.start()
 
     def joy_callback(self, msg):
-        dead_zone_threshold = 0.05  # Adjust this value based on your joystick's sensitivity
-        significant_movement = any(abs(axis) > dead_zone_threshold for axis in msg.axes)
         self.process_button_input(msg)
 
-        if significant_movement:
-            self.get_logger().info('Joystick input processed')
-            self.process_joy_input(msg)
+        self.process_joy_input(msg)
             
-            if self.random_mode_active:
-                self.get_logger().info('About to suspend random')
-                self.suspend_random_mode()
-        else:
-            # This else block is optional, just for logging purposes
-            self.get_logger().info('Joystick movement within dead zone, ignored')
-
+            
+      
 
     def process_button_input(self, msg):
 
@@ -167,12 +158,29 @@ class HeadMovementControl(Node):
             # Apply centering correction if joystick values are close to center
             if abs(joy_axis_value_left_x) <= dead_zone_threshold:
                 joy_axis_value_left_x = 0.0
+            else:
+                if self.random_mode_active:
+                    self.get_logger().info('About to suspend random')
+                    self.suspend_random_mode()
             if abs(joy_axis_value_left_y) <= dead_zone_threshold:
                 joy_axis_value_left_y = 0.0
+            else:
+                if self.random_mode_active:
+                    self.get_logger().info('About to suspend random')
+                    self.suspend_random_mode()
+            
             if abs(joy_axis_value_right_x) <= dead_zone_threshold:
                 joy_axis_value_right_x = 0.0
+            else:
+                if self.random_mode_active:
+                    self.get_logger().info('About to suspend random')
+                    self.suspend_random_mode()
             if abs(joy_axis_value_right_y) <= dead_zone_threshold:
                 joy_axis_value_right_y = 0.0
+            else:
+                if self.random_mode_active:
+                    self.get_logger().info('About to suspend random')
+                    self.suspend_random_mode()
 
             # Perform joystick processing here
             left_x = int(self.map_value(max(min(joy_axis_value_left_x, 1.0), -1.0), -1, 1, 8444, 4032))
