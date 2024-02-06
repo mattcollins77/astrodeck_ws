@@ -73,12 +73,16 @@ class HeadMovementControl(Node):
     def suspend_random_mode(self):
         if self.override_timer is not None:
             self.override_timer.cancel()
+        # Start the override timer with a 10-second delay
         self.override_timer = Timer(10, self.resume_random_mode)
         self.override_timer.start()
 
     def resume_random_mode(self):
+        if self.override_timer:
+            self.override_timer.cancel()
+            self.override_timer = None
         if not self.random_mode_active:
-            self.set_random_mode(True)
+            self.start_random_movement()
 
     def cancel_override_timer(self):
         if self.override_timer is not None:
@@ -149,28 +153,20 @@ class HeadMovementControl(Node):
 
 
     def process_joy_input(self, msg):
-        dead_zone_threshold = 0.1
-
-        # Initialize variables to track significant movement
-        significant_movement = False
-        joy_axis_values = [msg.axes[0], msg.axes[1], msg.axes[3], msg.axes[4]]
-
-        # Check for significant movement in any joystick axis
-        for axis_value in joy_axis_values:
-            if abs(axis_value) > dead_zone_threshold:
-                significant_movement = True
-                break
+        dead_zone_threshold = 0.1  # Consider adjusting based on sensitivity
+        # Determine if there's significant movement
+        significant_movement = any(abs(value) > dead_zone_threshold for value in msg.axes[:4])
 
         if significant_movement:
+            # Process joystick movement
+            self.process_servo_movement([msg.axes[0], msg.axes[1], msg.axes[3], msg.axes[4]])
+            # Suspend random movement due to joystick input
             if self.random_mode_active:
-                # Suspend random movement due to significant joystick input
-                self.get_logger().info('Suspending random movement due to joystick input.')
                 self.suspend_random_mode()
-            # Process joystick input for servo movement
-            self.process_servo_movement(joy_axis_values)
         else:
-            
-            self.center_servos()
+            # Center servos if no significant movement and not in random mode
+            if not self.random_mode_active:
+                self.center_servos()
             
     def process_servo_movement(self, joy_axis_values):
         joy_axis_value_left_x, joy_axis_value_left_y, joy_axis_value_right_x, joy_axis_value_right_y = joy_axis_values
