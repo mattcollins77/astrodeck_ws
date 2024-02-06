@@ -52,7 +52,7 @@ class HeadMovementControl(Node):
         self.get_logger().info('I heard on mood_topic: "%s"' % msg.mood)
         mood_key = (msg.mood, msg.level, msg.length)
         current_time = time.time()
-
+        self.get_logger().info('mood key: "%s"' % mood_key)
         if mood_key == 99:
             self.set_random_mode(True)
         elif mood_key == 100:
