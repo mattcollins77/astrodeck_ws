@@ -106,11 +106,19 @@ class HeadMovementControl(Node):
         self.random_movement_timer.start()
 
     def joy_callback(self, msg):
-        self.process_joy_input(msg)
-        self.get_logger().info('Joystick input processed')
-        if self.random_mode_active:
-            self.get_logger().info('about to suspend random')
-            self.suspend_random_mode()
+        dead_zone_threshold = 0.05  # Adjust this value based on your joystick's sensitivity
+        significant_movement = any(abs(axis) > dead_zone_threshold for axis in msg.axes)
+   
+        if significant_movement:
+            self.get_logger().info('Joystick input processed')
+            self.process_joy_input(msg)
+            
+            if self.random_mode_active:
+                self.get_logger().info('About to suspend random')
+                self.suspend_random_mode()
+        else:
+            # This else block is optional, just for logging purposes
+            self.get_logger().info('Joystick movement within dead zone, ignored')
 
     def process_joy_input(self, msg):
        
