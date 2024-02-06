@@ -172,8 +172,7 @@ class HeadMovementControl(Node):
             if not self.random_mode_active:
                 # Optionally center servos only if random mode is not active
                 self.center_servos()
-            self.get_logger().info('Joystick in dead zone, random movement continues or servos centered.')
-
+            
     def process_servo_movement(self, joy_axis_values):
         joy_axis_value_left_x, joy_axis_value_left_y, joy_axis_value_right_x, joy_axis_value_right_y = joy_axis_values
 
@@ -198,7 +197,7 @@ class HeadMovementControl(Node):
         self.servo.setTarget(2, left_x)
         self.servo.setTarget(5, left_y)
         self.servo.setTarget(3, right_x)
-        self.get_logger().info('Servos centered.')      
+              
 
     def map_value(self, value, from_low, from_high, to_low, to_high):
     # Map 'value' from the range [from_low, from_high] to [to_low, to_high]
