@@ -5,6 +5,7 @@ from sensor_msgs.msg import Joy
 from bd77_common.msg import MoodMsg  # Replace with your actual package name
 import time
 import random  # Import the random module
+from threading import Timer
 
 class HeadMovementControl(Node):
 
@@ -15,6 +16,7 @@ class HeadMovementControl(Node):
         self.random_mode_active = False
         self.last_non_random_mood = None
         self.override_timestamp = None  # Variable to store timestamp when overridden
+        self.override_timer = None
 
         self.mood_command_map = {
             ('Happy', 1, 1): 3,
@@ -49,70 +51,78 @@ class HeadMovementControl(Node):
         mood_key = (msg.mood, msg.level, msg.length)
         current_time = time.time()
 
-        if mood_key == ('Random', 1, 1):  # Activate random mode
-            self.random_mode_active = True
-            self.last_non_random_mood = None
-        elif mood_key == ('Random', 0, 1):  # Deactivate random mode
-            self.random_mode_active = False
-            if self.last_non_random_mood:
-                # Restore the last non-random mood if available
-                self.process_mood_command(self.last_non_random_mood)
+        if mood_key == "Random,1,1":
+            self.set_random_mode(True)
+        elif mood_key == "Random,0,1":
+            self.set_random_mode(False)
         else:
+            if self.random_mode_active:
+                self.suspend_random_mode()
             self.process_mood_command(mood_key)
-            # Store the last non-random mood
-            if mood_key != ('Random', 1, 1):
-                self.last_non_random_mood = mood_key
-            self.random_mode_active = False
-            self.override_timestamp = current_time
+    
+    def set_random_mode(self, active):
+        self.random_mode_active = active
+        if active:
+            self.start_random_movement()
+        else:
+            self.cancel_override_timer()
+      
+    def suspend_random_mode(self):
+        if self.override_timer is not None:
+            self.override_timer.cancel()
+        self.override_timer = Timer(20, self.resume_random_mode)
+        self.override_timer.start()
 
-    def joy_callback(self, msg):
-        current_time = time.time()
-        if self.random_mode_active:
-            if not self.override_timestamp:
-                self.override_timestamp = current_time
-            elif current_time - self.override_timestamp >= 20:
-                self.override_timestamp = None
-                self.random_mode_active = False
+    def resume_random_mode(self):
+        if not self.random_mode_active:
+            self.set_random_mode(True)
 
-        # Handle random movements within servo limits
+    def cancel_override_timer(self):
+        if self.override_timer is not None:
+            self.override_timer.cancel()
+            self.override_timer = None
+
+    def start_random_movement(self):
+        # Implement random movement here
         if self.random_mode_active:
-            # Generate random values within a smaller range for servos 2 and 5
+            # Generate random values within servo limits
             left_x = random.randint(5000, 7000)
             left_y = random.randint(4500, 5250)
             right_x = random.randint(4200, 5000)
-
-            # Set the random values to servos
+            # Update servos with random targets
             self.servo.setTarget(2, left_x)
             self.servo.setTarget(5, left_y)
             self.servo.setTarget(3, right_x)
+            # Schedule next random movement after a random delay
+            Timer(random.uniform(2.0, 5.0), self.start_random_movement).start()
 
-            # Introduce a delay between random movements (adjust as needed)
-            time.sleep(random.uniform(2.0, 5.0))  # Random delay between 2 and 5 seconds
+    def joy_callback(self, msg):
+        self.process_joy_input(msg)
+        if self.random_mode_active:
+            self.suspend_random_mode()
 
+    def process_joy_input(self, msg):
+       
+        # Handle random movements within servo limits
+  
         # Add your Steam Deck Joy callback logic here
         if len(msg.buttons) > 1 and msg.buttons[0] == 1:
             # Button[1] is pressed
             self.publish_mood("Happy", 1, 1)
-            self.override_timestamp = current_time  # Reset the override timestamp
             time.sleep(0.5)
         if len(msg.buttons) > 1 and msg.buttons[1] == 1:
             # Button[2] is pressed
             self.publish_mood("Sad", 1, 1)
-            self.override_timestamp = current_time  # Reset the override timestamp
             time.sleep(0.5)
         if len(msg.buttons) > 1 and msg.buttons[2] == 1:
             # Button[3] is pressed
             self.publish_mood("Angry", 1, 1)
-            self.override_timestamp = current_time  # Reset the override timestamp
             time.sleep(0.5)
         if len(msg.buttons) > 1 and msg.buttons[3] == 1:
             # Button[4] is pressed
             self.publish_mood("Scared", 1, 1)
-            self.override_timestamp = current_time  # Reset the override timestamp
             time.sleep(0.5)
 
-        if self.joystick_paused:
-            return
         if len(msg.axes) > 0:
             joy_axis_value_left_x = msg.axes[0]
             joy_axis_value_left_y = msg.axes[1]
