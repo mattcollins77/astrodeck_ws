@@ -72,7 +72,7 @@ class HeadMovementControl(Node):
     def suspend_random_mode(self):
         if self.override_timer is not None:
             self.override_timer.cancel()
-        self.override_timer = Timer(20, self.resume_random_mode)
+        self.override_timer = Timer(10, self.resume_random_mode)
         self.override_timer.start()
 
     def resume_random_mode(self):
@@ -85,22 +85,31 @@ class HeadMovementControl(Node):
             self.override_timer = None
 
     def start_random_movement(self):
+        if not self.random_mode_active:
+            return  # Stop random movements if random mode is deactivated
+
         # Implement random movement here
-        if self.random_mode_active:
-            # Generate random values within servo limits
-            left_x = random.randint(5000, 7000)
-            left_y = random.randint(4500, 5250)
-            right_x = random.randint(4200, 5000)
-            # Update servos with random targets
-            self.servo.setTarget(2, left_x)
-            self.servo.setTarget(5, left_y)
-            self.servo.setTarget(3, right_x)
-            # Schedule next random movement after a random delay
-            Timer(random.uniform(2.0, 5.0), self.start_random_movement).start()
+        self.get_logger().info('in random')
+        # Generate random values within servo limits
+        left_x = random.randint(5000, 7000)
+        left_y = random.randint(4500, 5250)
+        right_x = random.randint(4200, 5000)
+        # Update servos with random targets
+        self.servo.setTarget(2, left_x)
+        self.servo.setTarget(5, left_y)
+        self.servo.setTarget(3, right_x)
+
+        if self.random_movement_timer:
+            self.random_movement_timer.cancel()
+        # Schedule next random movement after a random delay
+        self.random_movement_timer = Timer(random.uniform(2.0, 5.0), self.start_random_movement)
+        self.random_movement_timer.start()
 
     def joy_callback(self, msg):
         self.process_joy_input(msg)
+        self.get_logger().info('Joystick input processed')
         if self.random_mode_active:
+            self.get_logger().info('about to suspend random')
             self.suspend_random_mode()
 
     def process_joy_input(self, msg):
